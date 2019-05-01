@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28809.33
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk4Events.Data", "Afk4Events.Data\Afk4Events.Data.csproj", "{9A1A062A-7118-47E0-B9E4-201BF8652D8C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk4Events.Service", "Afk4Events.Service\Afk4Events.Service.csproj", "{CF5E3E63-66CD-4D5D-B1F1-9A600BFB19C2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk4Events.TelegramBot", "Afk4Events.TelegramBot\Afk4Events.TelegramBot.csproj", "{CFCE7972-BF83-4DEB-AB67-095CCA6C3A9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk4Events.Models", "Afk4Events.Models\Afk4Events.Models.csproj", "{B8603025-3F7E-410A-81AB-354A092000C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afk4Events.Api", "Afk4Events.Api\Afk4Events.Api.csproj", "{9BEE8E28-F18F-4FEC-8B03-6E2FA985748F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk4Events.Api", "Afk4Events.Api\Afk4Events.Api.csproj", "{9BEE8E28-F18F-4FEC-8B03-6E2FA985748F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afk4Events.WebClient", "Afk4Events.WebClient\Afk4Events.WebClient.csproj", "{59606F6F-4537-4123-83B3-0C68043F13D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk4Events.WebClient", "Afk4Events.WebClient\Afk4Events.WebClient.csproj", "{59606F6F-4537-4123-83B3-0C68043F13D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afk4Events.Data", "Afk4Events.Data\Afk4Events.Data.csproj", "{11EB8089-502F-4773-81A7-ED849DDC80A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afk4Events.Service", "Afk4Events.Service\Afk4Events.Service.csproj", "{3C82CEF9-270D-4B67-8042-01CFADC5E4C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A1A062A-7118-47E0-B9E4-201BF8652D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A1A062A-7118-47E0-B9E4-201BF8652D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A1A062A-7118-47E0-B9E4-201BF8652D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A1A062A-7118-47E0-B9E4-201BF8652D8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF5E3E63-66CD-4D5D-B1F1-9A600BFB19C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF5E3E63-66CD-4D5D-B1F1-9A600BFB19C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF5E3E63-66CD-4D5D-B1F1-9A600BFB19C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF5E3E63-66CD-4D5D-B1F1-9A600BFB19C2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFCE7972-BF83-4DEB-AB67-095CCA6C3A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFCE7972-BF83-4DEB-AB67-095CCA6C3A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFCE7972-BF83-4DEB-AB67-095CCA6C3A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +37,14 @@ Global
 		{59606F6F-4537-4123-83B3-0C68043F13D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59606F6F-4537-4123-83B3-0C68043F13D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59606F6F-4537-4123-83B3-0C68043F13D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11EB8089-502F-4773-81A7-ED849DDC80A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11EB8089-502F-4773-81A7-ED849DDC80A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11EB8089-502F-4773-81A7-ED849DDC80A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11EB8089-502F-4773-81A7-ED849DDC80A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C82CEF9-270D-4B67-8042-01CFADC5E4C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C82CEF9-270D-4B67-8042-01CFADC5E4C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C82CEF9-270D-4B67-8042-01CFADC5E4C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C82CEF9-270D-4B67-8042-01CFADC5E4C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

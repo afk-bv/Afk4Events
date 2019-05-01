@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Afk4Events.Data;
+using Afk4Events.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -44,27 +45,30 @@ namespace Afk4Events.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            CurrentEnvironment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setup asp.net stuff
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
             services.AddHealthChecks().AddDbContextCheck<Afk4EventsContext>();
 
-            string connStr = Configuration["db"];
+            string databaseConnectionString = Configuration["db"];
             services.AddDbContext<Afk4EventsContext>(options =>
             {
-                options.UseNpgsql(connStr);
+                options.UseNpgsql(databaseConnectionString);
             });
 
             services.AddAuthentication(cfg =>
@@ -100,10 +104,36 @@ namespace Afk4Events.Api
                 options.HeaderName = "X-CSRF-TOKEN";
             });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                });
+            });
+
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+
+            // Add services
+            services.AddTransient<IUserService, UserService>();
+
+
+            // Create database for the lazy developer
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                var db = services.BuildServiceProvider().GetService<Afk4EventsContext>();
+                db.Database.EnsureCreated();
+                if (db.Database.GetPendingMigrations().Any())
+                {
+                    db.Database.Migrate();
+                }
+            }
         }
 
 
@@ -112,11 +142,13 @@ namespace Afk4Events.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors();
             }
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+        
             }
 
             app.UseRouting();

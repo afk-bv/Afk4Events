@@ -1,7 +1,78 @@
 ﻿@page "/"
+@inject HttpClient Http
+@using Afk4Events.Models
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div class="row">
+    <div class="col-md-12">
+        <h3>
+            Get user by Id
+        </h3>
+    </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <div class="col-md-4">
+        <input class="form-control"  bind="_userId" />
+        <button class="btn btn-primary" onclick=@(async ()=> await GetUser())>Do HTTP shit</button>
+    </div>
+</div>
+
+@if (_user != null)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <td>@_user.Name</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@_user.Email</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <img src="@_user.ProfilePictureUrl" />
+        </div>
+    </div>
+}
+<hr/>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Create user</h3>
+    </div>
+    <div class="col-md-12">
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input bind="_userCreateModel.Email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+            </div>
+            <div class="form-group">
+                <label for="nameInput">Name</label>
+                <input bind="_userCreateModel.Name" type="text" class="form-control" id="nameInput" placeholder="Name" />
+            </div>
+            <div class="form-group">
+                <label for="profilePictureUrlInput">Profile Picture URL</label>
+                <input bind="_userCreateModel.ProfilePictureUrl" type="text" class="form-control" id="profilePictureUrlInput" placeholder="Profile picture url" />
+            </div>
+            <button type="button" class="btn btn-primary" onclick=@(async ()=> await CreateUser())>Create user</button>
+        </form>
+    </div>
+</div>
+@functions {
+
+    private string _userId;
+    private UserDto _user;
+    private UserDto _userCreateModel = new UserDto();
+
+    private async Task GetUser()
+    {
+        _user = await Http.GetJsonAsync<UserDto>
+            ($"http://localhost:5000/api/user/{_userId}");
+    }
+
+    private async Task CreateUser()
+    {
+        await Http.PostJsonAsync("http://localhost:5000/api/user", _userCreateModel);
+    }
+}
