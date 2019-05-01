@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Afk4Events.Data\Afk4Events.Data.csproj" />
+    <ProjectReference Include="..\Afk4Events.Models\Afk4Events.Models.csproj" />
+  </ItemGroup>
+
+</Project>
