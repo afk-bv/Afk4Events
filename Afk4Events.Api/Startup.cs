@@ -112,8 +112,12 @@ namespace Afk4Events.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+
 
             // Build configuration
+            var emailOptions = new OidcOptions();
+            Configuration.Bind("Oidc", emailOptions);
             services.Configure<OidcOptions>(Configuration.GetSection("Oidc"));
 
             // Create database for the lazy developer
@@ -127,7 +131,6 @@ namespace Afk4Events.Api
                 }
             }
         }
-
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

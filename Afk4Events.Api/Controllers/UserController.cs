@@ -1,10 +1,7 @@
 ﻿using System;
-using Afk4Events.Api.Util;
 using Afk4Events.Data.Entities.Users;
 using Afk4Events.Models;
-using Afk4Events.Models.Events;
 using Afk4Events.Models.Users;
-using Afk4Events.Service.Event;
 using Afk4Events.Service.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,26 +41,6 @@ namespace Afk4Events.Api.Controllers
                 ProfilePictureUrl = userModel.ProfilePictureUrl
             };
             _userService.Create(user);
-            return Ok();
-        }
-    }
-
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EventController : AfkControllerBase
-    {
-        private readonly IEventService _eventService;
-
-        public EventController(IEventService eventService)
-        {
-            _eventService = eventService;
-        }
-
-        [HttpPost]
-        public IActionResult CreateEvent([FromBody] EventDto eventDto)
-        {
-            _eventService.CreateEvent(eventDto, UserId);
-
             return Ok();
         }
     }
