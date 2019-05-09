@@ -34,7 +34,7 @@ namespace Afk4Events.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(UserDto userModel)
+        public IActionResult Create([FromBody]UserDto userModel)
         {
             var user = new User()
             {
@@ -45,6 +45,5 @@ namespace Afk4Events.Api.Controllers
             _userService.Create(user);
             return Ok();
         }
-
     }
 }

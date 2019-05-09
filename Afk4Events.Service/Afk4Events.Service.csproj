@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Afk4Events.Data\Afk4Events.Data.csproj" />
     <ProjectReference Include="..\Afk4Events.Models\Afk4Events.Models.csproj" />
   </ItemGroup>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Afk4Events.Data;
 using Afk4Events.Service;
+using Afk4Events.Service.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -64,7 +65,7 @@ namespace Afk4Events.Api
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
             services.AddHealthChecks().AddDbContextCheck<Afk4EventsContext>();
-
+            services.AddMemoryCache(); // Used to store OIDC configs, upgrade to distributed when switching to load-balance
             string databaseConnectionString = Configuration["db"];
             services.AddDbContext<Afk4EventsContext>(options =>
             {
@@ -104,17 +105,6 @@ namespace Afk4Events.Api
                 options.HeaderName = "X-CSRF-TOKEN";
             });
 
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                builder =>
-                {
-                    builder.AllowAnyOrigin()
-                                        .AllowAnyHeader()
-                                        .AllowAnyMethod();
-                });
-            });
-
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -122,7 +112,11 @@ namespace Afk4Events.Api
 
             // Add services
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<IEventService, EventService>();
 
+            // Build configuration
+            services.Configure<OidcOptions>(Configuration.GetSection("Oidc"));
 
             // Create database for the lazy developer
             if (CurrentEnvironment.IsDevelopment())
@@ -142,7 +136,6 @@ namespace Afk4Events.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors();
             }
             else
             {
