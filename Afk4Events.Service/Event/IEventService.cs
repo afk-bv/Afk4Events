@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Afk4Events.Data.Entities;
+using Afk4Events.Data.Entities.UserAvailabilities;
 using Afk4Events.Models;
+using Afk4Events.Models.Events;
 
-namespace Afk4Events.Service
+namespace Afk4Events.Service.Event
 {
     public interface IEventService
     {
-        Event CreateEvent(EventDto eventDto, Guid createdById, Guid groupId);
+        Data.Entities.Events.Event CreateEvent(EventDto eventDto, Guid createdById);
 
         /// <param name="eventDateId">
         /// The Id of the EventDate.

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Afk4Events.Data;
-using Afk4Events.Data.Entities;
+using Afk4Events.Data.Entities.Events;
+using Afk4Events.Data.Entities.UserAvailabilities;
 using Afk4Events.Models;
+using Afk4Events.Models.Events;
 using Microsoft.EntityFrameworkCore;
 
-namespace Afk4Events.Service
+namespace Afk4Events.Service.Event
 {
     public class EventService : IEventService
     {
@@ -17,17 +19,17 @@ namespace Afk4Events.Service
             _db = db;
         }
 
-        public Event CreateEvent(EventDto eventDto, Guid createdById, Guid groupId)
+        public Data.Entities.Events.Event CreateEvent(EventDto eventDto, Guid createdById)
         {
             if (eventDto.EventDates.Count < 2)
             {
                 throw new ArgumentException("At least two dates must be specified", nameof(eventDto.EventDates));
             }
             
-            var dbEvent = new Event()
+            var dbEvent = new Data.Entities.Events.Event()
             {
                 CreatedById = createdById,
-                GroupId = groupId,
+                GroupId = eventDto.GroupId,
                 Location = eventDto.Location,
                 Name = eventDto.Name,
                 ThemeId = eventDto.ThemeName,

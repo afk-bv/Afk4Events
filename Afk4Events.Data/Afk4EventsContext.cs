@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
-using Afk4Events.Data.Entities;
+﻿using Afk4Events.Data.Entities.Events;
+using Afk4Events.Data.Entities.Groups;
+using Afk4Events.Data.Entities.Themes;
+using Afk4Events.Data.Entities.UserAvailabilities;
+using Afk4Events.Data.Entities.UserGroups;
+using Afk4Events.Data.Entities.Users;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -8,7 +12,7 @@ namespace Afk4Events.Data
 {
     public class Afk4EventsContext : DbContext, IDataProtectionKeyContext
     {
-        public Afk4EventsContext(DbContextOptions<Afk4EventsContext> options) : base(options)
+        public Afk4EventsContext(DbContextOptions options) : base(options)
         {
 
         }

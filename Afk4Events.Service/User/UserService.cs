@@ -1,8 +1,7 @@
-﻿using Afk4Events.Data;
-using Afk4Events.Data.Entities;
-using System;
+﻿using System;
+using Afk4Events.Data;
 
-namespace Afk4Events.Service
+namespace Afk4Events.Service.User
 {
     public class UserService : IUserService
     {
@@ -13,12 +12,12 @@ namespace Afk4Events.Service
             _db = db;
         }
 
-        public User Get(Guid id)
+        public Data.Entities.Users.User Get(Guid id)
         {
             return _db.Users.Find(id);
         }
 
-        public void Create(User user)
+        public void Create(Data.Entities.Users.User user)
         {
             _db.Users.Add(user);
             _db.SaveChanges();

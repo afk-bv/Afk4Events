@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Afk4Events.Data;
+﻿using Afk4Events.Data;
 using IdentityModel.OidcClient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -36,7 +31,7 @@ namespace Afk4Events.Service.Authentication
             });
         }
 
-        public async Task<(string> StartOidcLogin(string redirectUrl, bool prompt = false)
+       /* public async Task<(string> StartOidcLogin(string redirectUrl, bool prompt = false)
         {
             var client = GetOidcClient();
             var state = await client.PrepareLoginAsync(new { prompt});
@@ -58,5 +53,6 @@ namespace Afk4Events.Service.Authentication
 
             return "";
         }
+        */
     }
 }

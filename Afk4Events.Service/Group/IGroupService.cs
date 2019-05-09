@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Afk4Events.Service
+namespace Afk4Events.Service.Group
 {
     public interface IGroupService
     {

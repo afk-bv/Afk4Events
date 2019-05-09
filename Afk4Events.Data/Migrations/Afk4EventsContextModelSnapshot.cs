@@ -19,10 +19,12 @@ namespace Afk4Events.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.Event", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.Events.Event", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment");
 
                     b.Property<Guid>("CreatedById");
 
@@ -55,7 +57,7 @@ namespace Afk4Events.Data.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.EventDate", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.Events.EventDate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -73,7 +75,7 @@ namespace Afk4Events.Data.Migrations
                     b.ToTable("EventDates");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.Group", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.Groups.Group", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -86,7 +88,7 @@ namespace Afk4Events.Data.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.Theme", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.Themes.Theme", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +101,39 @@ namespace Afk4Events.Data.Migrations
                     b.ToTable("Themes");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.User", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.UserAvailabilities.UserAvailability", b =>
+                {
+                    b.Property<Guid>("UserId");
+
+                    b.Property<Guid>("EventDateId");
+
+                    b.Property<int>("AvailabilityKind");
+
+                    b.Property<string>("Comment");
+
+                    b.HasKey("UserId", "EventDateId");
+
+                    b.HasIndex("EventDateId");
+
+                    b.ToTable("UserAvailabilities");
+                });
+
+            modelBuilder.Entity("Afk4Events.Data.Entities.UserGroups.UserGroup", b =>
+                {
+                    b.Property<Guid>("UserId");
+
+                    b.Property<Guid>("GroupId");
+
+                    b.Property<bool>("IsAdmin");
+
+                    b.HasKey("UserId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("UserGroups");
+                });
+
+            modelBuilder.Entity("Afk4Events.Data.Entities.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -111,8 +145,6 @@ namespace Afk4Events.Data.Migrations
                     b.Property<string>("GoogleId")
                         .IsRequired()
                         .HasMaxLength(250);
-
-                    b.Property<bool>("IsAdmin");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -131,38 +163,6 @@ namespace Afk4Events.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.UserAvailability", b =>
-                {
-                    b.Property<Guid>("UserId");
-
-                    b.Property<Guid>("EventDateId");
-
-                    b.Property<int>("AvailabilityKind");
-
-                    b.Property<string>("Comment");
-
-                    b.HasKey("UserId", "EventDateId");
-
-                    b.HasIndex("EventDateId");
-
-                    b.ToTable("UserAvailabilities");
-                });
-
-            modelBuilder.Entity("Afk4Events.Data.Entities.UserGroup", b =>
-                {
-                    b.Property<Guid>("UserId");
-
-                    b.Property<Guid>("GroupId");
-
-                    b.Property<bool>("IsAdmin");
-
-                    b.HasKey("UserId", "GroupId");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("UserGroups");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
                 {
                     b.Property<int>("Id")
@@ -177,51 +177,56 @@ namespace Afk4Events.Data.Migrations
                     b.ToTable("DataProtectionKeys");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.Event", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.Events.Event", b =>
                 {
-                    b.HasOne("Afk4Events.Data.Entities.User", "CreatedBy")
+                    b.HasOne("Afk4Events.Data.Entities.Users.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Afk4Events.Data.Entities.Group", "Group")
+                    b.HasOne("Afk4Events.Data.Entities.Groups.Group", "Group")
                         .WithMany("Events")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Afk4Events.Data.Entities.EventDate", "PickedDate")
+                    b.HasOne("Afk4Events.Data.Entities.Events.EventDate", "PickedDate")
                         .WithMany()
                         .HasForeignKey("PickedDateId1");
 
-                    b.HasOne("Afk4Events.Data.Entities.Theme", "Theme")
+                    b.HasOne("Afk4Events.Data.Entities.Themes.Theme", "Theme")
                         .WithMany()
                         .HasForeignKey("ThemeId");
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.EventDate", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.Events.EventDate", b =>
                 {
-                    b.HasOne("Afk4Events.Data.Entities.Event", "Event")
+                    b.HasOne("Afk4Events.Data.Entities.Events.Event", "Event")
                         .WithMany("EventDates")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.UserAvailability", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.UserAvailabilities.UserAvailability", b =>
                 {
-                    b.HasOne("Afk4Events.Data.Entities.EventDate", "EventDate")
-                        .WithMany()
+                    b.HasOne("Afk4Events.Data.Entities.Events.EventDate", "EventDate")
+                        .WithMany("UserAvailabilities")
                         .HasForeignKey("EventDateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Afk4Events.Data.Entities.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Afk4Events.Data.Entities.UserGroup", b =>
+            modelBuilder.Entity("Afk4Events.Data.Entities.UserGroups.UserGroup", b =>
                 {
-                    b.HasOne("Afk4Events.Data.Entities.Group", "Group")
+                    b.HasOne("Afk4Events.Data.Entities.Groups.Group", "Group")
                         .WithMany("Users")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Afk4Events.Data.Entities.User", "User")
+                    b.HasOne("Afk4Events.Data.Entities.Users.User", "User")
                         .WithMany("Groups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

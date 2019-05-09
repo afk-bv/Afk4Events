@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Afk4Events.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,6 @@ namespace Afk4Events.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Email = table.Column<string>(maxLength: 250, nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false),
                     ProfilePictureUrl = table.Column<string>(nullable: true),
                     GoogleId = table.Column<string>(maxLength: 250, nullable: false)
                 },
@@ -92,6 +91,7 @@ namespace Afk4Events.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
                     GroupId = table.Column<Guid>(nullable: false),
                     ThemeId = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 500, nullable: false),
@@ -159,6 +159,12 @@ namespace Afk4Events.Data.Migrations
                         name: "FK_UserAvailabilities_EventDates_EventDateId",
                         column: x => x.EventDateId,
                         principalTable: "EventDates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserAvailabilities_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });

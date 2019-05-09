@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace Afk4Events.Models
+namespace Afk4Events.Models.Events
 {
-    public class UserDto
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string ProfilePictureUrl { get; set; }
-    }
-
     public class EventDto
     {
         [Required]
@@ -25,13 +16,7 @@ namespace Afk4Events.Models
         [MaxLength(1000)]
         public string Location { get; set; }
         public IList<EventDateDto> EventDates { get; set; }
-    }
-
-    public class EventDateDto
-    {
         [Required]
-        public DateTime Start { get; set; }
-        [Required]
-        public DateTime End { get; set; }
+        public Guid GroupId { get; set; }
     }
 }

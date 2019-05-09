@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Afk4Events.Data;
-using Afk4Events.Data.Entities;
+using Afk4Events.Data.Entities.UserGroups;
 
-namespace Afk4Events.Service
+namespace Afk4Events.Service.Group
 {
     public class GroupService: IGroupService
     {
