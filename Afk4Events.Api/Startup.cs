@@ -42,115 +42,117 @@ using Newtonsoft.Json;
  */
 namespace Afk4Events.Api
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
-        {
-            Configuration = configuration;
-            CurrentEnvironment = environment;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+		{
+			Configuration = configuration;
+			CurrentEnvironment = environment;
+		}
 
-        public IConfiguration Configuration { get; }
-        private IWebHostEnvironment CurrentEnvironment { get; set; }
+		public IConfiguration Configuration { get; }
+		private IWebHostEnvironment CurrentEnvironment { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Setup asp.net stuff
-            services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            });
-            services.AddHealthChecks().AddDbContextCheck<Afk4EventsContext>();
-            services.AddMemoryCache(); // Used to store OIDC configs, upgrade to distributed when switching to load-balance
-            string databaseConnectionString = Configuration["db"];
-            services.AddDbContext<Afk4EventsContext>(options =>
-            {
-                options.UseNpgsql(databaseConnectionString);
-            });
+		public void ConfigureServices(IServiceCollection services)
+		{
+			// Setup asp.net stuff
+			services.AddControllers()
+				.AddNewtonsoftJson(options =>
+				{
+					options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+					options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+					options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+				});
+			services.AddHealthChecks().AddDbContextCheck<Afk4EventsContext>();
+			services.AddMemoryCache(); // Used to store OIDC configs, upgrade to distributed when switching to load-balance
+			string databaseConnectionString = Configuration["db"];
+			services.AddDbContext<Afk4EventsContext>(options =>
+			{
+				options.UseNpgsql(databaseConnectionString);
+			});
 
-            services.AddAuthentication(cfg =>
-            {
-                cfg.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                cfg.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = "x";
-                    options.ExpireTimeSpan = TimeSpan.FromHours(12);
-                    options.SlidingExpiration = true;
-                    options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.Events.OnRedirectToAccessDenied = context =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                    options.Events.OnRedirectToLogin = context =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                });
+			services.AddAuthentication(cfg =>
+				{
+					cfg.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+					cfg.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+				})
+				.AddCookie(options =>
+				{
+					options.Cookie.Name = "x";
+					options.ExpireTimeSpan = TimeSpan.FromHours(12);
+					options.SlidingExpiration = true;
+					options.Cookie.SameSite = SameSiteMode.Strict;
+					options.Events.OnRedirectToAccessDenied = context =>
+					{
+						context.Response.StatusCode = 401;
+						return Task.CompletedTask;
+					};
+					options.Events.OnRedirectToLogin = context =>
+					{
+						context.Response.StatusCode = 401;
+						return Task.CompletedTask;
+					};
+				});
 
-            services.AddDataProtection(options =>
-            {
-                options.ApplicationDiscriminator = "UserApi";
-            }).PersistKeysToDbContext<Afk4EventsContext>();
+			services.AddDataProtection(options =>
+				{
+					options.ApplicationDiscriminator = "UserApi";
+				})
+				.PersistKeysToDbContext<Afk4EventsContext>();
 
-            services.AddAntiforgery(options =>
-            {
-                options.HeaderName = "X-CSRF-TOKEN";
-            });
+			services.AddAntiforgery(options =>
+			{
+				options.HeaderName = "X-CSRF-TOKEN";
+			});
 
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
+			services.Configure<ForwardedHeadersOptions>(options =>
+			{
+				options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+			});
 
-            // Add services
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IGroupService, GroupService>();
-            services.AddTransient<IEventService, EventService>();
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
+			// Add services
+			services.AddTransient<IUserService, UserService>();
+			services.AddTransient<IGroupService, GroupService>();
+			services.AddTransient<IEventService, EventService>();
+			services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 
-            // Build configuration
-            var emailOptions = new OidcOptions();
-            Configuration.Bind("Oidc", emailOptions);
-            services.Configure<OidcOptions>(Configuration.GetSection("Oidc"));
+			// Build configuration
+			var emailOptions = new OidcOptions();
+			Configuration.Bind("Oidc", emailOptions);
+			services.Configure<OidcOptions>(Configuration.GetSection("Oidc"));
 
-            // Create database for the lazy developer
-            if (CurrentEnvironment.IsDevelopment())
-            {
-                var db = services.BuildServiceProvider().GetService<Afk4EventsContext>();
-                db.Database.EnsureCreated();
-                if (db.Database.GetPendingMigrations().Any())
-                {
-                    db.Database.Migrate();
-                }
-            }
-        }
+			// Create database for the lazy developer
+			if (CurrentEnvironment.IsDevelopment())
+			{
+				var db = services.BuildServiceProvider().GetService<Afk4EventsContext>();
+				db.Database.EnsureCreated();
+				if (db.Database.GetPendingMigrations().Any())
+				{
+					db.Database.Migrate();
+				}
+			}
+		}
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseHsts();
+			}
 
-            app.UseRouting();
-            app.UseHealthChecks("/api/health");
-            app.UseAuthorization();
-            app.UseAuthentication();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			app.UseRouting();
+			app.UseHealthChecks("/api/health");
+			app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+		}
+	}
 }

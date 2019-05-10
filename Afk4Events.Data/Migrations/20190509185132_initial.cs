@@ -4,256 +4,256 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Afk4Events.Data.Migrations
 {
-    public partial class initial : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.CreateTable(
-                name: "DataProtectionKeys",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    FriendlyName = table.Column<string>(nullable: true),
-                    Xml = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DataProtectionKeys", x => x.Id);
-                });
+	public partial class initial : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.CreateTable(
+				"DataProtectionKeys",
+				table => new
+				{
+					Id = table.Column<int>()
+						.Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+					FriendlyName = table.Column<string>(nullable: true),
+					Xml = table.Column<string>(nullable: true)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_DataProtectionKeys", x => x.Id);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                });
+			migrationBuilder.CreateTable(
+				"Groups",
+				table => new
+				{
+					Id = table.Column<Guid>(),
+					Name = table.Column<string>(maxLength: 250, nullable: true)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Groups", x => x.Id);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Themes",
-                columns: table => new
-                {
-                    Id = table.Column<string>(maxLength: 250, nullable: false),
-                    Css = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Themes", x => x.Id);
-                });
+			migrationBuilder.CreateTable(
+				"Themes",
+				table => new
+				{
+					Id = table.Column<string>(maxLength: 250),
+					Css = table.Column<string>(nullable: true)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Themes", x => x.Id);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
-                    Email = table.Column<string>(maxLength: 250, nullable: false),
-                    ProfilePictureUrl = table.Column<string>(nullable: true),
-                    GoogleId = table.Column<string>(maxLength: 250, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
+			migrationBuilder.CreateTable(
+				"Users",
+				table => new
+				{
+					Id = table.Column<Guid>(),
+					Name = table.Column<string>(maxLength: 250),
+					Email = table.Column<string>(maxLength: 250),
+					ProfilePictureUrl = table.Column<string>(nullable: true),
+					GoogleId = table.Column<string>(maxLength: 250)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Users", x => x.Id);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "UserGroups",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserGroups", x => new { x.UserId, x.GroupId });
-                    table.ForeignKey(
-                        name: "FK_UserGroups_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserGroups_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+			migrationBuilder.CreateTable(
+				"UserGroups",
+				table => new
+				{
+					UserId = table.Column<Guid>(),
+					GroupId = table.Column<Guid>(),
+					IsAdmin = table.Column<bool>()
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_UserGroups", x => new {x.UserId, x.GroupId});
+					table.ForeignKey(
+						"FK_UserGroups_Groups_GroupId",
+						x => x.GroupId,
+						"Groups",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+					table.ForeignKey(
+						"FK_UserGroups_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Comment = table.Column<string>(nullable: true),
-                    GroupId = table.Column<Guid>(nullable: false),
-                    ThemeId = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 500, nullable: false),
-                    Location = table.Column<string>(maxLength: 1000, nullable: false),
-                    PickedDateId1 = table.Column<Guid>(nullable: true),
-                    PickedDateId = table.Column<Guid>(nullable: true),
-                    CreatedById = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Events_Users_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Events_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Events_Themes_ThemeId",
-                        column: x => x.ThemeId,
-                        principalTable: "Themes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+			migrationBuilder.CreateTable(
+				"Events",
+				table => new
+				{
+					Id = table.Column<Guid>(),
+					Comment = table.Column<string>(nullable: true),
+					GroupId = table.Column<Guid>(),
+					ThemeId = table.Column<string>(nullable: true),
+					Name = table.Column<string>(maxLength: 500),
+					Location = table.Column<string>(maxLength: 1000),
+					PickedDateId1 = table.Column<Guid>(nullable: true),
+					PickedDateId = table.Column<Guid>(nullable: true),
+					CreatedById = table.Column<Guid>()
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Events", x => x.Id);
+					table.ForeignKey(
+						"FK_Events_Users_CreatedById",
+						x => x.CreatedById,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+					table.ForeignKey(
+						"FK_Events_Groups_GroupId",
+						x => x.GroupId,
+						"Groups",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+					table.ForeignKey(
+						"FK_Events_Themes_ThemeId",
+						x => x.ThemeId,
+						"Themes",
+						"Id",
+						onDelete: ReferentialAction.Restrict);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "EventDates",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Start = table.Column<DateTime>(nullable: false),
-                    End = table.Column<DateTime>(nullable: false),
-                    EventId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventDates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EventDates_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+			migrationBuilder.CreateTable(
+				"EventDates",
+				table => new
+				{
+					Id = table.Column<Guid>(),
+					Start = table.Column<DateTime>(),
+					End = table.Column<DateTime>(),
+					EventId = table.Column<Guid>()
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_EventDates", x => x.Id);
+					table.ForeignKey(
+						"FK_EventDates_Events_EventId",
+						x => x.EventId,
+						"Events",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "UserAvailabilities",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(nullable: false),
-                    EventDateId = table.Column<Guid>(nullable: false),
-                    Comment = table.Column<string>(nullable: true),
-                    AvailabilityKind = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAvailabilities", x => new { x.UserId, x.EventDateId });
-                    table.ForeignKey(
-                        name: "FK_UserAvailabilities_EventDates_EventDateId",
-                        column: x => x.EventDateId,
-                        principalTable: "EventDates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserAvailabilities_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+			migrationBuilder.CreateTable(
+				"UserAvailabilities",
+				table => new
+				{
+					UserId = table.Column<Guid>(),
+					EventDateId = table.Column<Guid>(),
+					Comment = table.Column<string>(nullable: true),
+					AvailabilityKind = table.Column<int>()
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_UserAvailabilities", x => new {x.UserId, x.EventDateId});
+					table.ForeignKey(
+						"FK_UserAvailabilities_EventDates_EventDateId",
+						x => x.EventDateId,
+						"EventDates",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+					table.ForeignKey(
+						"FK_UserAvailabilities_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_EventDates_EventId",
-                table: "EventDates",
-                column: "EventId");
+			migrationBuilder.CreateIndex(
+				"IX_EventDates_EventId",
+				"EventDates",
+				"EventId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_CreatedById",
-                table: "Events",
-                column: "CreatedById");
+			migrationBuilder.CreateIndex(
+				"IX_Events_CreatedById",
+				"Events",
+				"CreatedById");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_GroupId",
-                table: "Events",
-                column: "GroupId");
+			migrationBuilder.CreateIndex(
+				"IX_Events_GroupId",
+				"Events",
+				"GroupId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_PickedDateId1",
-                table: "Events",
-                column: "PickedDateId1");
+			migrationBuilder.CreateIndex(
+				"IX_Events_PickedDateId1",
+				"Events",
+				"PickedDateId1");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_ThemeId",
-                table: "Events",
-                column: "ThemeId");
+			migrationBuilder.CreateIndex(
+				"IX_Events_ThemeId",
+				"Events",
+				"ThemeId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAvailabilities_EventDateId",
-                table: "UserAvailabilities",
-                column: "EventDateId");
+			migrationBuilder.CreateIndex(
+				"IX_UserAvailabilities_EventDateId",
+				"UserAvailabilities",
+				"EventDateId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserGroups_GroupId",
-                table: "UserGroups",
-                column: "GroupId");
+			migrationBuilder.CreateIndex(
+				"IX_UserGroups_GroupId",
+				"UserGroups",
+				"GroupId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
+			migrationBuilder.CreateIndex(
+				"IX_Users_Email",
+				"Users",
+				"Email",
+				unique: true);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_GoogleId",
-                table: "Users",
-                column: "GoogleId",
-                unique: true);
+			migrationBuilder.CreateIndex(
+				"IX_Users_GoogleId",
+				"Users",
+				"GoogleId",
+				unique: true);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Events_EventDates_PickedDateId1",
-                table: "Events",
-                column: "PickedDateId1",
-                principalTable: "EventDates",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-        }
+			migrationBuilder.AddForeignKey(
+				"FK_Events_EventDates_PickedDateId1",
+				"Events",
+				"PickedDateId1",
+				"EventDates",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Restrict);
+		}
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_EventDates_Events_EventId",
-                table: "EventDates");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropForeignKey(
+				"FK_EventDates_Events_EventId",
+				"EventDates");
 
-            migrationBuilder.DropTable(
-                name: "DataProtectionKeys");
+			migrationBuilder.DropTable(
+				"DataProtectionKeys");
 
-            migrationBuilder.DropTable(
-                name: "UserAvailabilities");
+			migrationBuilder.DropTable(
+				"UserAvailabilities");
 
-            migrationBuilder.DropTable(
-                name: "UserGroups");
+			migrationBuilder.DropTable(
+				"UserGroups");
 
-            migrationBuilder.DropTable(
-                name: "Events");
+			migrationBuilder.DropTable(
+				"Events");
 
-            migrationBuilder.DropTable(
-                name: "Users");
+			migrationBuilder.DropTable(
+				"Users");
 
-            migrationBuilder.DropTable(
-                name: "Groups");
+			migrationBuilder.DropTable(
+				"Groups");
 
-            migrationBuilder.DropTable(
-                name: "EventDates");
+			migrationBuilder.DropTable(
+				"EventDates");
 
-            migrationBuilder.DropTable(
-                name: "Themes");
-        }
-    }
+			migrationBuilder.DropTable(
+				"Themes");
+		}
+	}
 }

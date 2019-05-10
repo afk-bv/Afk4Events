@@ -1,21 +1,20 @@
 ﻿namespace Afk4Events.Models.Authentication
 {
-    public class AuthenticationFinishRequest
-    {
-        public string Url { get; set; }
-        public string Code { get; set; }
-        public string State { get; set; }
+	public class AuthenticationFinishRequest
+	{
+		public AuthenticationFinishRequest(string url, string code, string state)
+		{
+			Url = url;
+			Code = code;
+			State = state;
+		}
 
-        public AuthenticationFinishRequest(string url, string code, string state)
-        {
-            Url = url;
-            Code = code;
-            State = state;
-        }
+		public AuthenticationFinishRequest()
+		{
+		}
 
-        public AuthenticationFinishRequest()
-        {
-            
-        }
-    }
+		public string Url { get; set; }
+		public string Code { get; set; }
+		public string State { get; set; }
+	}
 }

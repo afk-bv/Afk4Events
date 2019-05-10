@@ -7,18 +7,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Afk4Events.WebClient
 {
-    public class Startup
-    {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddTransient<LoginViewModel>();
-            services.AddSingleton<IUriHelper>(WebAssemblyUriHelper.Instance);
-            services.AddStorage();
-        }
+	public class Startup
+	{
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddTransient<LoginViewModel>();
+			services.AddSingleton<IUriHelper>(WebAssemblyUriHelper.Instance);
+			services.AddStorage();
+		}
 
-        public void Configure(IComponentsApplicationBuilder app)
-        {
-            app.AddComponent<App>("app");
-        }
-    }
+		public void Configure(IComponentsApplicationBuilder app)
+		{
+			app.AddComponent<App>("app");
+		}
+	}
 }

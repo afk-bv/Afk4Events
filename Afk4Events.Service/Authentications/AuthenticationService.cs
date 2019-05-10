@@ -10,99 +10,98 @@ using Microsoft.Extensions.Options;
 
 namespace Afk4Events.Service.Authentications
 {
-    /// <summary>
-    /// Facilitates the Authorization Code Flow of OpenID Connect
-    /// https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowSteps
-    /// </summary>
-    public class AuthenticationService: IAuthenticationService
-    {
-        private readonly Afk4EventsContext _db;
-        private readonly IMemoryCache _memoryCache;
-        private readonly ILogger<AuthenticationService> _logger;
-        private readonly OidcOptions _oidcOptions;
+	/// <summary>
+	///   Facilitates the Authorization Code Flow of OpenID Connect
+	///   https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowSteps
+	/// </summary>
+	public class AuthenticationService : IAuthenticationService
+	{
+		private readonly Afk4EventsContext _db;
+		private readonly ILogger<AuthenticationService> _logger;
+		private readonly IMemoryCache _memoryCache;
+		private readonly OidcOptions _oidcOptions;
 
-        public AuthenticationService(Afk4EventsContext db, IMemoryCache memoryCache, ILogger<AuthenticationService> logger, 
-            IOptions<OidcOptions> oidcOptions)
-        {
-            _db = db;
-            _memoryCache = memoryCache;
-            _logger = logger;
-            _oidcOptions = oidcOptions.Value;
-        }
+		public AuthenticationService(Afk4EventsContext db, IMemoryCache memoryCache, ILogger<AuthenticationService> logger,
+			IOptions<OidcOptions> oidcOptions)
+		{
+			_db = db;
+			_memoryCache = memoryCache;
+			_logger = logger;
+			_oidcOptions = oidcOptions.Value;
+		}
 
-        private OidcClient GetOidcClient(string redirectUrl)
-        {
-            var client = new OidcClient(new OidcClientOptions()
-            {
-                Authority = _oidcOptions.Authority,
-                ClientId = _oidcOptions.ClientId,
-                ClientSecret = _oidcOptions.Secret,
-                RedirectUri = redirectUrl,
-                ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect,
-                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
-                Scope = "email profile"
-            });
+		public async Task<AuthorizeState> StartOidcLogin(string redirectUrl, bool prompt = false)
+		{
+			var client = GetOidcClient(redirectUrl);
+			// Prepares an Authentication Request containing the desired request parameters.
+			var authorizeState = await client.PrepareLoginAsync(new {prompt});
+			// Stores the request parameters for validation upon callback
+			_memoryCache.Set(authorizeState.State, authorizeState);
+			return authorizeState;
+		}
 
-            // Fucking Google not sticking to protocol.
-            client.Options.Policy.Discovery.ValidateEndpoints = false;
-            client.Options.Policy.RequireAccessTokenHash = false;
-            return client;
-        }
+		public async Task<User> FinishOidcLogin(string code, string stateKey, string redirectUrl)
+		{
+			var client = GetOidcClient(redirectUrl);
+			// retrieves the request validation parameters (nonce etc).
+			var state = _memoryCache.Get<AuthorizeState>(stateKey);
+			if (state == default(AuthorizeState))
+			{
+				throw new ArgumentException("Authorization state not found or expired", nameof(stateKey));
+			}
 
-        public async Task<AuthorizeState> StartOidcLogin(string redirectUrl, bool prompt = false)
-        {
-            var client = GetOidcClient(redirectUrl);
-            // Prepares an Authentication Request containing the desired request parameters.
-            var authorizeState = await client.PrepareLoginAsync(new { prompt });
-            // Stores the request parameters for validation upon callback
-            _memoryCache.Set(authorizeState.State, authorizeState);
-            return authorizeState;
-        }
+			// Validate the Id token provided in the callback Url from the authorization authority.
+			var result = await client.ProcessResponseAsync(redirectUrl, state);
+			if (result.IsError)
+			{
+				_logger.LogError("Oidc login failure: " + result.Error);
+				return default;
+			}
 
-        public async Task<User> FinishOidcLogin(string code, string stateKey, string redirectUrl)
-        {
-            var client = GetOidcClient(redirectUrl);
-            // retrieves the request validation parameters (nonce etc).
-            var state = _memoryCache.Get<AuthorizeState>(stateKey);
-            if (state == default(AuthorizeState))
-            {
-                throw new ArgumentException("Authorization state not found or expired", nameof(stateKey));
-            }
+			// Get relevant claims from the Id token
+			string googleSid = result.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+			string name = result.User.Claims.FirstOrDefault(x => x.Type == "name")?.Value;
+			string picture = result.User.Claims.FirstOrDefault(x => x.Type == "picture")?.Value;
+			string email = result.User.Claims.FirstOrDefault(x => x.Type == "email")?.Value;
+			if (googleSid == default || name == default || picture == default || email == default)
+			{
+				throw new Exception("Missing claim"); // MissingClaimException ?
+			}
 
-            // Validate the Id token provided in the callback Url from the authorization authority.
-            var result = await client.ProcessResponseAsync(redirectUrl, state);
-            if (result.IsError)
-            {
-                _logger.LogError("Oidc login failure: " + result.Error);
-                return default;
-            }
+			// Use unique Id to check whether this user is already created locally.
+			var user = _db.Users.FirstOrDefault(x => x.GoogleId == googleSid);
+			if (user == default)
+			{
+				user = new User(googleSid);
+				await _db.Users.AddAsync(user);
+			}
 
-            // Get relevant claims from the Id token
-            var googleSid = result.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-            var name = result.User.Claims.FirstOrDefault(x => x.Type == "name")?.Value;
-            var picture = result.User.Claims.FirstOrDefault(x => x.Type == "picture")?.Value;
-            var email = result.User.Claims.FirstOrDefault(x => x.Type == "email")?.Value;
-            if (googleSid == default || name == default || picture == default || email == default)
-            {
-                throw new Exception("Missing claim"); // MissingClaimException ?
-            }
+			// Set or update local user.
+			user.ProfilePictureUrl = picture;
+			user.Name = name;
+			user.Email = email;
+			await _db.SaveChangesAsync();
 
-            // Use unique Id to check whether this user is already created locally.
-            var user = _db.Users.FirstOrDefault(x => x.GoogleId == googleSid);
-            if (user == default)
-            {
-                user = new User(googleSid);
-                await _db.Users.AddAsync(user);
-            }
+			return user;
+		}
 
-            // Set or update local user.
-            user.ProfilePictureUrl = picture;
-            user.Name = name;
-            user.Email = email;
-            await _db.SaveChangesAsync();
+		private OidcClient GetOidcClient(string redirectUrl)
+		{
+			var client = new OidcClient(new OidcClientOptions
+			{
+				Authority = _oidcOptions.Authority,
+				ClientId = _oidcOptions.ClientId,
+				ClientSecret = _oidcOptions.Secret,
+				RedirectUri = redirectUrl,
+				ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect,
+				Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+				Scope = "email profile"
+			});
 
-            return user;
-        }
-
-    }
+			// Fucking Google not sticking to protocol.
+			client.Options.Policy.Discovery.ValidateEndpoints = false;
+			client.Options.Policy.RequireAccessTokenHash = false;
+			return client;
+		}
+	}
 }

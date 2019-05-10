@@ -1,10 +1,11 @@
 ﻿using System;
+using Afk4Events.Data.Entities.Users;
 
 namespace Afk4Events.Service.Users
 {
-    public interface IUserService
-    {
-        void Create(Data.Entities.Users.User user);
-        Data.Entities.Users.User Get(Guid id);
-    }
+	public interface IUserService
+	{
+		void Create(User user);
+		User Get(Guid id);
+	}
 }
