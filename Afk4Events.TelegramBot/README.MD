@@ -24,5 +24,22 @@ $ dotnet run
 ```
 
 ## Running via Docker
-Todo
+You can build the bot's docker image via `build.ps1`. Then you can run the bot with `run.ps1`.
+**Note:** Since the bot expects the environment variable `AFK4EVENTS_BOT_TOKEN`, be sure to provide this via the 
+`config.env` file.
 
+```
+$ echo "AFK4EVENTS_BOT_TOKEN=<your>:<token>" > config.env
+```
+
+```
+$ powershell build.ps1
+$ powershell run.ps1 
+```
+
+Of course, the bot can also be run directly.
+
+```
+$ dotnet build
+$ AFK4EVENTS_BOT_TOKEN=<your>:<token> dotnet run
+```

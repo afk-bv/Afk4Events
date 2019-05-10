@@ -25,6 +25,11 @@ namespace Afk4Events.TelegramBot
     {
         static void Main(string[] args)
         {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AFK4EVENTS_BOT_TOKEN")))
+            {
+                Console.WriteLine("Required environment variable AFK4EVENTS_BOT_TOKEN not defined. Please edit config.env");
+                Environment.Exit(1);
+            }
             var testBot = new TelegramBotClient(Environment.GetEnvironmentVariable("AFK4EVENTS_BOT_TOKEN"));
             var me = testBot.GetMeAsync().Result;
 
