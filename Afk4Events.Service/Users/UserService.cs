@@ -1,7 +1,7 @@
 ﻿using System;
 using Afk4Events.Data;
 
-namespace Afk4Events.Service.User
+namespace Afk4Events.Service.Users
 {
     public class UserService : IUserService
     {

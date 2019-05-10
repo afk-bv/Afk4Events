@@ -1,4 +1,4 @@
-﻿namespace Afk4Events.Service.Authentication
+﻿namespace Afk4Events.Service.Authentications
 {
     public class OidcOptions
     {

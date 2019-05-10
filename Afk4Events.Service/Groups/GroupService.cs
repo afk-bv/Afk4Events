@@ -3,7 +3,7 @@ using System.Linq;
 using Afk4Events.Data;
 using Afk4Events.Data.Entities.UserGroups;
 
-namespace Afk4Events.Service.Group
+namespace Afk4Events.Service.Groups
 {
     public class GroupService: IGroupService
     {

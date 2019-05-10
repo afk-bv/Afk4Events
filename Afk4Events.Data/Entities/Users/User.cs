@@ -46,5 +46,15 @@ namespace Afk4Events.Data.Entities.Users
         /// List of the groups user is member of
         /// </summary>
         public IList<UserGroup> Groups { get; set; }
+
+        /// <summary>
+        /// Empty constructor for EF
+        /// </summary>
+        public User() {}
+
+        public User(string googleId)
+        {
+            GoogleId = googleId;
+        }
     }
 }

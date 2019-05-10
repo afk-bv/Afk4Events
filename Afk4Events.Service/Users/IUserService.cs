@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Afk4Events.Service.User
+namespace Afk4Events.Service.Users
 {
     public interface IUserService
     {

@@ -1,6 +1,6 @@
 ﻿using Afk4Events.Api.Util;
 using Afk4Events.Models.Events;
-using Afk4Events.Service.Event;
+using Afk4Events.Service.Events;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Afk4Events.Api.Controllers

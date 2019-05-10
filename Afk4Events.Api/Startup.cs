@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Afk4Events.Data;
-using Afk4Events.Service.Authentication;
-using Afk4Events.Service.Event;
-using Afk4Events.Service.Group;
-using Afk4Events.Service.User;
+using Afk4Events.Service.Authentications;
+using Afk4Events.Service.Events;
+using Afk4Events.Service.Groups;
+using Afk4Events.Service.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;

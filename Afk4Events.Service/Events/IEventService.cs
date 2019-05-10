@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Afk4Events.Data.Entities.UserAvailabilities;
-using Afk4Events.Models;
 using Afk4Events.Models.Events;
 
-namespace Afk4Events.Service.Event
+namespace Afk4Events.Service.Events
 {
     public interface IEventService
     {

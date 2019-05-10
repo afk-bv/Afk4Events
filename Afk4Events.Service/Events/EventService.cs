@@ -4,11 +4,10 @@ using System.Linq;
 using Afk4Events.Data;
 using Afk4Events.Data.Entities.Events;
 using Afk4Events.Data.Entities.UserAvailabilities;
-using Afk4Events.Models;
 using Afk4Events.Models.Events;
 using Microsoft.EntityFrameworkCore;
 
-namespace Afk4Events.Service.Event
+namespace Afk4Events.Service.Events
 {
     public class EventService : IEventService
     {
