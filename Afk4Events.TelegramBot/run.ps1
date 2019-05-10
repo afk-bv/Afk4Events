@@ -1,0 +1,1 @@
+docker run --rm --env-file ./config.env afk4events.telegrambot:latest

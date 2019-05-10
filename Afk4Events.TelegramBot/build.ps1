@@ -1,0 +1,1 @@
+docker build -t afk4events.telegrambot .
