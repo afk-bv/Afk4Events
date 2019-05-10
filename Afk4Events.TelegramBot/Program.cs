@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Threading;
-using Telegram.Bot;
+using System.Collections.Generic;
+using Afk4Events.TelegramBot.Bot;
+using Serilog;
 
 namespace Afk4Events.TelegramBot
 {
@@ -21,33 +22,60 @@ namespace Afk4Events.TelegramBot
 	   ──▐▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▌──────
 	   ────▀▄▄▀▀▀▀▄▄▀▀▀▀▀▀▄▄▀▀▀▀▀▀▄▄▀────────
 	 */
-	internal class Program
+	class Program
 	{
-		private static void Main(string[] args)
+		/// <summary>
+		/// Entrypoint
+		/// </summary>
+		static void Main(string[] args)
 		{
-			if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AFK4EVENTS_BOT_TOKEN")))
-			{
-				Console.WriteLine("Required environment variable AFK4EVENTS_BOT_TOKEN not defined. Please edit config.env");
-				Environment.Exit(1);
-			}
-
-			var testBot = new TelegramBotClient(Environment.GetEnvironmentVariable("AFK4EVENTS_BOT_TOKEN"));
-			var me = testBot.GetMeAsync().Result;
-
-			Console.Write($"Hello World, I am user {me.Id} and my name is {me.FirstName}");
-			testBot.OnMessage += (sender, eventargs) =>
-			{
-				if (eventargs.Message != null)
-				{
-					Console.WriteLine("Received a message in chat.");
-					testBot.SendTextMessageAsync(
-						eventargs.Message.Chat,
-						$"You said:\n{eventargs.Message.Text}");
-				}
-			};
-
-			testBot.StartReceiving();
-			Thread.Sleep(int.MaxValue);
+			EnvironmentCheck();
+			ConfigureLogging();
+			
+			var bot = RunBot();
+			
+			Log.Information("Bot started. Press any key to quit.");
+			Console.ReadLine();
+			
+			bot.Stop();
+			Log.Information("Exiting.");
 		}
+
+		private static void EnvironmentCheck()
+		{
+			foreach(var requiredVariable in new List<string>() {"AFK4EVENTS_BOT_TOKEN", "AFK4EVENTS_API_LOCATION"})
+			{
+				if(string.IsNullOrEmpty(requiredVariable))
+				{
+					Log.Information(
+						$"Required environment variable ${requiredVariable} not defined. Please supply this variable."
+					);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Configure App Logging
+		/// </summary>
+		private static void ConfigureLogging()
+		{
+			// Configure Logging
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Information()
+				.WriteTo.Console()
+				.CreateLogger();
+		}
+
+		private static EventsBot RunBot()
+		{
+			EventsBot bot = new EventsBot(new EventsBotOptions(
+				Environment.GetEnvironmentVariable("AFK4EVENTS_BOT_TOKEN"),
+				Environment.GetEnvironmentVariable("AFK4EVENTS_API_LOCATION")));
+			
+			bot.RunAsync();
+
+			return bot;
+		}
+		
 	}
 }
