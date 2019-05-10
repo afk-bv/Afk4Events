@@ -36,10 +36,3 @@ $ echo "AFK4EVENTS_BOT_TOKEN=<your>:<token>" > config.env
 $ powershell build.ps1
 $ powershell run.ps1 
 ```
-
-Of course, the bot can also be run directly.
-
-```
-$ dotnet build
-$ AFK4EVENTS_BOT_TOKEN=<your>:<token> dotnet run
-```
