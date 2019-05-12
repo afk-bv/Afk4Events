@@ -8,21 +8,19 @@ pipeline {
             }
         }
         
-        stage('Restore') {
-            steps {
-                sh "dotnet restore"
-            }
-        }
-        
-        stage('Clean') {
-            steps {
-                sh 'dotnet clean'
-            }
-        }
-        
         stage('Build') {
             steps {
                 sh 'pwsh ./Afk4Events.TelegramBot/build.ps1'
+            }
+        }
+        
+        stage('Deploy') {
+            when { 
+              branch 'master'
+            }
+            
+            steps {
+                sh 'pwsh ./Afk4Events.TelegramBot/deploy.ps1          
             }
         }
     }
