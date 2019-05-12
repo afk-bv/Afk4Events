@@ -10,7 +10,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'pwsh ./Afk4Events.TelegramBot/build.ps1 -tag ${env.BRANCH_NAME}'
+                sh "pwsh ./Afk4Events.TelegramBot/build.ps1 -tag ${env.BRANCH_NAME}"
             }
         }
         
