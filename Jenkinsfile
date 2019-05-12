@@ -20,7 +20,7 @@ pipeline {
             }
             
             steps {
-                sh 'pwsh ./Afk4Events.TelegramBot/deploy.ps1          
+                sh 'pwsh ./Afk4Events.TelegramBot/deploy.ps1'
             }
         }
     }
