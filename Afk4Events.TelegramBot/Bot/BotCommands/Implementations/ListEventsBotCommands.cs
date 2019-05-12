@@ -20,7 +20,7 @@ namespace Afk4Events.TelegramBot.Bot.BotCommands.Implementations
 			_client.SendTextMessageAsync(
 				_chat.Id,
 				$"This is an example of the List Events command!\n" +
-				$"This command has been invoked ${++invocations} times!"
+				$"This command has been invoked {++invocations} times!"
 			);
 		}
 	}
