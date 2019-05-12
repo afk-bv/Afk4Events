@@ -22,7 +22,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'dotnet build --configuration Release'
+                sh 'pwsh ./Afk4Events.TelegramBot/build.ps1'
             }
         }
     }
