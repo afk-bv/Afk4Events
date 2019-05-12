@@ -14,9 +14,9 @@ namespace Afk4Events.TelegramBot.Bot.Parser
 	/// </summary>
 	public class BotCommandParser : ICommandParser
 	{
-		private const string HelpPattern       = @"^\/event-help\s*$";
-		private const string ListEventsPattern = @"^\/event-list\s*$";
-		private const string EventInfoPattern  = @"^\/event-info \""(?<eventTitle>.+)\""\s*$";
+		private const string HelpPattern       = @"^\/events-help\s*$";
+		private const string ListEventsPattern = @"^\/events-list\s*$";
+		private const string EventInfoPattern  = @"^\/events-info \""(?<eventTitle>.+)\""\s*$";
 
 		private readonly Regex HelpExpression       = new Regex(HelpPattern,       RegexOptions.Compiled);
 		private readonly Regex ListEventsExpression = new Regex(ListEventsPattern, RegexOptions.Compiled);
