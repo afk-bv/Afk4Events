@@ -10,7 +10,9 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh "pwsh ./Afk4Events.TelegramBot/build.ps1 -tag ${env.BRANCH_NAME}"
+                sh "pwsh ./build.ps1 -project api -tag ${env.BRANCH_NAME}"
+                sh "pwsh ./build.ps1 -project telegrambot -tag ${env.BRANCH_NAME}"
+                sh "pwsh ./build.ps1 -project webclient -tag ${env.BRANCH_NAME}"
             }
         }
         
@@ -23,7 +25,9 @@ pipeline {
             }
             
             steps {
-                sh "pwsh ./Afk4Events.TelegramBot/deploy.ps1 -tag ${env.BRANCH_NAME}"
+                sh "pwsh ./deploy.ps1 -project api -tag ${env.BRANCH_NAME}"
+                sh "pwsh ./deploy.ps1 -project telegrambot -tag ${env.BRANCH_NAME}"
+                sh "pwsh ./deploy.ps1 -project webclient -tag ${env.BRANCH_NAME}"
             }
         }
     }
