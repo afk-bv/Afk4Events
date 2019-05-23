@@ -36,6 +36,3 @@ $ echo "AFK4EVENTS_BOT_TOKEN=<your>:<token>" > config.env
 $ powershell build.ps1
 $ powershell run.ps1 
 ```
-
-```
-```
