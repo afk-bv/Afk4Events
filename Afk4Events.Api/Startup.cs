@@ -127,10 +127,6 @@ namespace Afk4Events.Api
 			{
 				var db = services.BuildServiceProvider().GetService<Afk4EventsContext>();
 				db.Database.EnsureCreated();
-				if (db.Database.GetPendingMigrations().Any())
-				{
-					db.Database.Migrate();
-				}
 			}
 		}
 
