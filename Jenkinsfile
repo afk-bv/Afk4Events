@@ -29,11 +29,8 @@ pipeline {
                 sh "pwsh ./deploy.ps1 -project api -tag ${env.BRANCH_NAME}"
                 sh "pwsh ./deploy.ps1 -project telegrambot -tag ${env.BRANCH_NAME}"
                 sh "pwsh ./deploy.ps1 -project webclient -tag ${env.BRANCH_NAME}"
+                office365ConnectorSend message:"Completed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", webhookUrl: "${env.O365_HOOK}" 
             }
-        }
-
-        stage('Report') {
-           office365ConnectorSend message:"Completed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", webhookUrl: "${env.O365_HOOK}" 
         }
     }
 }
