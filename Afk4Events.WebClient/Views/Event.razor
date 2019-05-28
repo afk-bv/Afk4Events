@@ -1,0 +1,39 @@
+@page "/event"
+@using Afk4Events.WebClient.Shared.Events
+
+
+<div class="row m-0">
+  <EventTitle Title=@EvtTitle />
+</div>
+<div class="container px-5 py-2">
+  <div class="row">
+    <div class="col-8">
+        <h2>Description</h2>
+        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget ligula sed eros efficitur tincidunt et sed
+          nulla. Donec imperdiet blandit pretium. Etiam aliquet, arcu maximus ornare molestie, orci metus cursus mi, a
+          consectetur ligula massa cursus justo. In sed sem et sapien porta sagittis. Donec ut nisl pretium, posuere ante
+          sed, tincidunt risus. Vestibulum vestibulum sapien sit amet maximus euismod. Nunc ac lobortis ipsum, sed
+          vulputate nulla.
+
+          Mauris at aliquet est. Pellentesque ac blandit risus. Morbi hendrerit nunc sit amet mauris ultricies
+          ullamcorper. Nunc venenatis quam urna, sed pellentesque velit pharetra sed. Vivamus tincidunt ligula enim, eu
+          accumsan ex cursus ut. Curabitur elementum ligula sed nibh vestibulum congue. Pellentesque non nisi tincidunt
+          augue pellentesque dapibus. </p>
+        <h2>Date</h2>
+        <p>Some date?</p>
+    </div>
+    <div class="col-4">
+      <h1>Availability</h1>
+    </div>
+  </div>
+</div>
+
+@functions {
+string EvtTitle {get; set;} = "Lord Of The Weeb III";
+List<Object> Events = new List<Object>()
+    {
+    new Object(),
+    new Object(),
+    new Object()
+    };
+    }
