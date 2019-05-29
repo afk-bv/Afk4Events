@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
 @import url("./elements/eventcalendar.css");
 
+
+
 .afk4events-main-menu-toggle {
   position: fixed;
   z-index: 1000;
@@ -29,7 +31,6 @@
   font-family: 'Roboto Slab';
   color: #eee;
   width: 100%;
-  font-size: calc(12px + 5vmin);
 }
 
 .afk4events-event-title-box #meta {
@@ -100,4 +101,36 @@ margin: 0 !important;
 
 .afk4events-event-date-box-buttons button {
   color: white !important;
+}
+
+/* Smallest Devices, (phones, < 768 px) */
+@media (min-width: 0) { 
+  .afk4events-event-title-box > #title {
+    font-size: 1.5em
+  }
+
+  .afk4events-event-title-box > #meta > #owner, #date, #eta {
+    font-size: 0.85em;
+  }
+ }
+
+/* Small devices (tablets, 768px and up) */
+ @media (min-width: 768px) {
+  .afk4events-event-title-box > #title {
+    font-size: 2.5em;
+  }
+  .afk4events-event-title-box > #meta > #owner, #date, #eta {
+    font-size: 1em;
+  }
+ }
+
+/* Small devices (tablets, 992px and up) */
+@media (min-width: 992px) {
+  .afk4events-event-title-box > #title {
+    font-size: 3em;
+  }
+
+  .afk4events-event-title-box > #meta > #owner, #date, #eta {
+    font-size: 1.25em;
+  }
 }
