@@ -27,6 +27,8 @@
   grid-row-start: 1;
   font-family: 'Roboto Slab';
   color: #eee;
+  width: 100%;
+  font-size: calc(12px + 5vmin);
 }
 
 .afk4events-event-title-box #meta {
@@ -37,20 +39,9 @@ font-family: 'Roboto Slab';
 color: #eee;
 }
 
-.afk4events-event-title-box > #meta > #owner {
-font-family: 'Raleway';
-font-size: 1.2em;
-margin: 5px;
-}
-.afk4events-event-title-box > #meta > #date {
-font-family: 'Raleway';
-font-size: 1.2em;
-margin: 5px;
-}
-
-.afk4events-event-title-box > #meta > #eta {
-font-family: 'Raleway';
-font-size: 1.2em;
+.afk4events-event-title-box > #meta > #owner, #date, #eta {
+font-family: 'Roboto';
+font-size: calc(12px + 1.5vmin);
 margin: 5px;
 }
 
