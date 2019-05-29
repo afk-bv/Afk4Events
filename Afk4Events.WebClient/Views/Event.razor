@@ -1,39 +1,66 @@
-@page "/event"
+@page "/event/{EventId}"
+@using Afk4Events.Models.Events
 @using Afk4Events.WebClient.Shared.Events
+@using Afk4Events.WebClient.Shared.Calendar
 
 
 <div class="row m-0">
-  <EventTitle Title=@EvtTitle />
+  <EventTitle Title=@SelectedEvent.Name />
 </div>
 <div class="container px-5 py-2">
   <div class="row">
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         <h2>Description</h2>
-        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget ligula sed eros efficitur tincidunt et sed
-          nulla. Donec imperdiet blandit pretium. Etiam aliquet, arcu maximus ornare molestie, orci metus cursus mi, a
-          consectetur ligula massa cursus justo. In sed sem et sapien porta sagittis. Donec ut nisl pretium, posuere ante
-          sed, tincidunt risus. Vestibulum vestibulum sapien sit amet maximus euismod. Nunc ac lobortis ipsum, sed
-          vulputate nulla.
-
-          Mauris at aliquet est. Pellentesque ac blandit risus. Morbi hendrerit nunc sit amet mauris ultricies
-          ullamcorper. Nunc venenatis quam urna, sed pellentesque velit pharetra sed. Vivamus tincidunt ligula enim, eu
-          accumsan ex cursus ut. Curabitur elementum ligula sed nibh vestibulum congue. Pellentesque non nisi tincidunt
-          augue pellentesque dapibus. </p>
+        <p>@SelectedEvent.Description</p>
         <h2>Date</h2>
         <p>Some date?</p>
     </div>
-    <div class="col-sm-4">
-      <h1>Availability</h1>
+    <div class="col-sm-6">
+      <h2>Availability</h2>
+      <EventCalendar InitialDate=@DateTime.Now/>
     </div>
   </div>
 </div>
 
 @functions {
-string EvtTitle {get; set;} = "Lord Of The Weeb III";
-List<Object> Events = new List<Object>()
+  [Parameter]
+  public string EventId {get; set;}
+
+  public EventDto SelectedEvent;
+
+List<EventDto> Events = new List<EventDto>()
     {
-    new Object(),
-    new Object(),
-    new Object()
+      new EventDto() {
+        Name = "Lord Of The Weeb III",
+        ThemeName = "dank",
+        Location = "My Location",
+        GroupId = new Guid(),
+        Description = "Lets go watch Lord of the Rings again."
+      },
+      new EventDto() {
+        Name = "Willems TestEvent",
+        ThemeName = "dank",
+        Location = "Location II",
+        GroupId = new Guid(),
+        Description = "BBQ @ Nick's place"
+      },
+      new EventDto() {
+        Name = "Hello World",
+        ThemeName = "dank",
+        Location = "Location III",
+        GroupId = new Guid(),
+        Description = "Goodbye world"
+      },
     };
+
+    protected override void OnInit()
+    {
+      if(EventId == "1") {
+        SelectedEvent = Events[0];
+      } else if(EventId == "2") {
+        SelectedEvent = Events[1];
+      } else if(EventId == "3") {
+        SelectedEvent = Events[2];
+      }
     }
+}
