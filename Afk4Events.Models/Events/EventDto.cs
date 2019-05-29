@@ -8,6 +8,7 @@ namespace Afk4Events.Models.Events
 	{
 		[Required] [MaxLength(500)] public string Name { get; set; }
     [MaxLength(500)] public string Description { get; set; }
+    public string ImageURL { get; set; }
 		[Required] [MaxLength(250)] public string ThemeName { get; set; }
 		[Required] [MaxLength(1000)] public string Location { get; set; }
 		public IList<EventDateDto> EventDates { get; set; }
