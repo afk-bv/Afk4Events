@@ -1,0 +1,98 @@
+@using System.Globalization;
+
+<div class="afk4events-calendar">
+  <div class="afk4events-calendar-header">
+    <button onclick="@(() => ChangeMonth(-1))" class="btn afk4events-calendar-header-left"><i class="fas fa-arrow-circle-left fa-2x"></i></button>
+    <span class="afk4events-calendar-header-text">@InitialDate.ToString("MMMM", CultureInfo.InvariantCulture)</span>
+    <button onclick="@(() => ChangeMonth(1))" class="btn afk4events-calendar-header-right"><i class="fas fa-arrow-circle-right fa-2x"></i></button>
+        <span class="afk4events-calendar-header-year">@InitialDate.Year</span>
+  </div>
+      <hr class="afk4events-calendar-ruler" />
+      
+    <div class="afk4events-calendar-main">
+      <table class="afk4events-calendar-main-table">
+        <thead class="afk4events-calendar-main-table-header">
+          <tr>
+            <th>M</th>
+            <th>T</th>
+            <th>W</th>
+            <th>T</th>
+            <th>F</th> 
+            <th>S</th>
+            <th>S</th>
+          </tr>
+        </thead>
+        <tbody>
+          @{
+            const int MaxDayOfMonth = 31;
+            const int DaysPerWeek = 7;
+
+            int currentDay = 0;
+            var buildingTable = true;
+            int dayCounter = 1;
+            while(buildingTable) {
+              <tr>
+                @for(; currentDay < MaxDayOfMonth+1; dayCounter++) 
+                {
+                  if(((((int) InitialDate.DayOfWeek) - 1) % 7) + 1 > dayCounter && dayCounter < 7) 
+                  {
+                    // Handle first week behaviour. Display empty cells until we reach
+                    // the first day of the week.
+                    <td> </td>
+                  }
+                  else if(currentDay >= DateTime.DaysInMonth(InitialDate.Year, InitialDate.Month)) 
+                  {
+                    // Same but at the end of the month. We want to display empty cells.
+                    <td> </td>
+                  }
+                  else 
+                  {
+                    // Otherwise: Just print the day number.
+                    currentDay++;
+                    <td>@currentDay</td>
+                  }
+
+                  // Check if we still need to continue building this table.
+                  if(dayCounter > 0 && (dayCounter % DaysPerWeek) == 0) {
+                    dayCounter++;
+                    break;
+                  }
+                }
+                @if(dayCounter >= MaxDayOfMonth) 
+                {
+                  buildingTable = false;
+                }
+              </tr>
+            }
+          }
+      </tbody>
+      </table>
+    </div>
+</div> 
+
+@functions {
+  [Parameter]
+  DateTime InitialDate { get;set; }
+
+  enum Weekdays { 
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6,
+    Sunday = 7
+  }
+
+  protected override void OnInit() 
+  {
+    // get First Day of this month.
+    // InitialDate = InitialDate.AddDays(InitialDate.Day - 1); 
+    InitialDate = new DateTime(2019, 5, 29);
+    Console.WriteLine($"Initial day: {InitialDate.DayOfWeek}");
+  }
+
+  public void ChangeMonth(int shift) {
+    InitialDate = InitialDate.AddMonths(shift);
+  }
+}

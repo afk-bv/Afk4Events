@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+@import url("./elements/eventcalendar.css");
 
 .afk4events-main-menu-toggle {
   position: fixed;
