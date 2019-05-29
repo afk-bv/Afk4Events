@@ -332,3 +332,4 @@ ASALocalRun/
 \.vscode/
 
 netcore/
+omnisharp.json
