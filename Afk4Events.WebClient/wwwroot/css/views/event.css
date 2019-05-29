@@ -4,15 +4,15 @@
 
 .afk4events-event-title-box {
   display: inline-grid;
+  position: relative;
   grid-template-columns: auto auto auto;
   grid-template-rows: auto auto auto;
-  background-color: #261744;
-  background-image: linear-gradient(90deg, #360033 0%, #0b8793 200%);
-  -webkit-backdrop-filter: contrast(4) blur(30px);
-  backdrop-filter: contrast(4) blur(30px);
   padding: 5px;
   margin-top: 15px;
   margin-left: 15px;
+  overflow: hidden; 
+  box-shadow: 0px 0px 29px -13px rgba(0,0,0,0.70);
+  z-index: 1;
 }
 
 .afk4events-event-title-box #title {
@@ -22,6 +22,7 @@
   font-family: 'Roboto Slab';
   color: #eee;
   width: 100%;
+  z-index: 2;
 }
 
 .afk4events-event-title-box #meta {
@@ -30,12 +31,25 @@ grid-column-end: 3;
 grid-row-start: 2;
 font-family: 'Roboto Slab';
 color: #eee;
+z-index: 2;
 }
 
 .afk4events-event-title-box > #meta > #owner, #date, #eta {
 font-family: 'Roboto';
 font-size: calc(12px + 1.5vmin);
 margin: 5px;
+z-index: 2;
+}
+
+.afk4events-event-title-box-blurred-background {
+  background-size: cover;
+  overflow: hidden;
+  filter: contrast(80%) brightness(80%) blur(28px) opacity(100%);
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
 }
 
 .afk4events-event-title-header {
