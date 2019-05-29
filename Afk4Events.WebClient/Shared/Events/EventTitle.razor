@@ -1,4 +1,4 @@
-<div class="afk4events-event-title-header">
+<div class="afk4events-event-title-header" style="background-image: url('@ImageURL');">
   <div class="afk4events-event-title-box">
     <h1 id="title">@Title</h1>
     <div id="meta">
@@ -12,6 +12,8 @@
 @functions {
 [Parameter]
 string Title {get; set;}
+[Parameter]
+string ImageURL { get; set; }
 
 string PickedDate {get; set;} = "14-06-2019";
 string TimeRemaining {get;set;} = "16 hours";

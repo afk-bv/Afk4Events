@@ -5,7 +5,7 @@
 
 
 <div class="row m-0">
-  <EventTitle Title=@SelectedEvent.Name />
+  <EventTitle Title=@SelectedEvent.Name ImageURL=@SelectedEvent.ImageURL />
 </div>
 <div class="container px-4 py-2">
   <div class="row">
@@ -35,21 +35,24 @@ List<EventDto> Events = new List<EventDto>()
         ThemeName = "dank",
         Location = "My Location",
         GroupId = new Guid(),
-        Description = "Lets go watch Lord of the Rings again."
+        Description = "Lets go watch Lord of the Rings again.",
+        ImageURL = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/71df2eb9-aa6d-4bb1-a46b-c4f68124289c/dbgatwe-f9f4af87-7ea7-4190-92e6-2404d9dafd13.png/v1/fill/w_900,h_505,q_80,strp/hatsune_miku_synthwave_vocaloid_retrowave_by_marusama97_dbgatwe-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTA1IiwicGF0aCI6IlwvZlwvNzFkZjJlYjktYWE2ZC00YmIxLWE0NmItYzRmNjgxMjQyODljXC9kYmdhdHdlLWY5ZjRhZjg3LTdlYTctNDE5MC05MmU2LTI0MDRkOWRhZmQxMy5wbmciLCJ3aWR0aCI6Ijw9OTAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.XlqZ3HUTogaS3ygOUF6NKiXdLuaNcSWDvoebTlpOulw"
       },
       new EventDto() {
-        Name = "Willems TestEvent",
+        Name = "BBQ TestEvent",
         ThemeName = "dank",
         Location = "Location II",
         GroupId = new Guid(),
-        Description = "BBQ @ Nick's place"
+        Description = "BBQ @ Nick's place",
+        ImageURL = "https://vignette.wikia.nocookie.net/universe-of-smash-bros-lawl/images/7/70/Inferno_Cop.jpg/revision/latest?cb=20160502030016"
       },
       new EventDto() {
         Name = "Hello World",
         ThemeName = "dank",
         Location = "Location III",
         GroupId = new Guid(),
-        Description = "Goodbye world"
+        Description = "Goodbye world",
+        ImageURL = "https://i.ytimg.com/vi/CUapPhdM7nc/maxresdefault.jpg"
       },
     };
 
