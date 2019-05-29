@@ -49,7 +49,16 @@
                   {
                     // Otherwise: Just print the day number.
                     currentDay++;
-                    <td>@currentDay</td>
+                    <td>
+                      @if((currentDay == DateTime.Now.Day && DateTime.Now.Year == InitialDate.Year && DateTime.Now.Month == InitialDate.Month))
+                      {
+                        <b>@currentDay</b>
+                      }
+                      else 
+                      {
+                        @currentDay
+                      }
+                    </td>
                   }
 
                   // Check if we still need to continue building this table.
