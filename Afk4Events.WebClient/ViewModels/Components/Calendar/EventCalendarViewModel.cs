@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Afk4Events.Models.Events;
 using Microsoft.AspNetCore.Components;
 
-namespace Afk4Events.WebClient.Shared.Calendar
+namespace Afk4Events.WebClient.ViewModels.Components.Calendar
 {
   public class EventCalendarViewModel : ComponentBase
   {

@@ -1,5 +1,5 @@
 @using System.Globalization;
-@inherits EventCalendarViewModel
+@inherits Afk4Events.WebClient.ViewModels.Components.Calendar.EventCalendarViewModel
 
 <div class="afk4events-calendar">
   <div class="afk4events-calendar-header">
@@ -32,7 +32,7 @@
               <tr>
                 @for(; currentDay < MaxDayOfMonth+1; dayCounter++) 
                 {
-                  if(((((int) InitialDate.DayOfWeek) - 1) % 7) + 1 > dayCounter && dayCounter < 7) 
+                  if(((((int) InitialDate.DayOfWeek) - 1) % 7) + 1 > dayCounter && dayCounter < 7)
                   {
                     // Handle first week behaviour. Display empty cells until we reach
                     // the first day of the week.

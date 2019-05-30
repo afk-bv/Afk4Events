@@ -1,3 +1,5 @@
+@inherits Afk4Events.WebClient.ViewModels.Components.EventTitle.EventTitleViewModel
+
 <div class="afk4events-event-title-header" style="background-image: url('@ImageURL');">
   <div class="afk4events-event-title-box">
     <div class="afk4events-event-title-box-blurred-background" style="background-image: url('@ImageURL')"></div>
@@ -9,13 +11,3 @@
     </div>
   </div>
 </div>
-
-@functions {
-[Parameter]
-string Title {get; set;}
-[Parameter]
-string ImageURL { get; set; }
-
-string PickedDate {get; set;} = "14-06-2019";
-string TimeRemaining {get;set;} = "16 hours";
-}
