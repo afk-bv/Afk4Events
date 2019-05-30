@@ -37,6 +37,12 @@
   font-size: 1.5em;
 }
 
+.afk4events-calendar-header button:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+
 .afk4events-calendar-header-right {
   grid-row: 1;
   grid-column: 3;

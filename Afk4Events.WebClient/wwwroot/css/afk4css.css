@@ -3,6 +3,10 @@
 @import url('./views/event.css');
 @import url("./elements/eventcalendar.css");
 
+body {
+  margin-top: 50px;
+}
+
 .afk4events-main-menu-toggle {
   position: fixed;
   z-index: 1000;
