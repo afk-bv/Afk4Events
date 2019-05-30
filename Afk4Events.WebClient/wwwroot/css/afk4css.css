@@ -4,7 +4,7 @@
 @import url("./elements/eventcalendar.css");
 
 body {
-  margin-top: 50px;
+	margin-top: 80.3333px;
 }
 
 .afk4events-main-menu-toggle {
@@ -12,3 +12,16 @@ body {
   z-index: 1000;
 }
 
+.afk4events-navbar {
+	background-color: white;
+	z-index: 1000;
+}
+
+.afk4events-navbar-toggle {
+	border: 0;
+}
+
+.afk4events-navbar {
+	min-height: 80.33px;
+	transition: top 0.3s, box-shadow 0.3s;
+}
