@@ -1,4 +1,5 @@
 @using System.Globalization;
+@inherits EventCalendarViewModel
 
 <div class="afk4events-calendar">
   <div class="afk4events-calendar-header">
@@ -24,9 +25,6 @@
         </thead>
         <tbody>
           @{
-            const int MaxDayOfMonth = 31;
-            const int DaysPerWeek = 7;
-
             int currentDay = 0;
             var buildingTable = true;
             int dayCounter = 1;
@@ -78,30 +76,4 @@
       </table>
     </div>
 </div> 
-
-@functions {
-  [Parameter]
-  DateTime InitialDate { get;set; }
-
-  enum Weekdays { 
-    Monday = 1,
-    Tuesday = 2,
-    Wednesday = 3,
-    Thursday = 4,
-    Friday = 5,
-    Saturday = 6,
-    Sunday = 7
-  }
-
-  protected override void OnInit() 
-  {
-    // get First Day of this month.
-    // InitialDate = InitialDate.AddDays(InitialDate.Day - 1); 
-    InitialDate = new DateTime(2019, 5, 29);
-    Console.WriteLine($"Initial day: {InitialDate.DayOfWeek}");
-  }
-
-  public void ChangeMonth(int shift) {
-    InitialDate = InitialDate.AddMonths(shift);
-  }
 }
